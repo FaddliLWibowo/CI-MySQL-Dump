@@ -1,7 +1,7 @@
 CI MySQL Dump
 ===============
 
-__CI MySQL Dump__ merupakan file pustaka(library) untuk framework PHP __Codeigniter__ yang berfungsi sebagai proses backup database __MySQL__. Pada dasarnya, database MySQL dapat dibackup melalui perintah _Command Prompt_ (CMD) / Terminal (Dalam Linux) dengan perintah "*mysqldump* *--opt* *-h* *[namahost]* *-u* *[username]* *-p* *[password]* *[database]* *>* *~/[nama-file-output].sql*". Namun, di beberapa penyedia layanan hosting PHP dan MySQL di Indonesia, fitur command ini tidak diimplementasikan/dinon-aktifkan oleh penyedia layanan hosting tersebut dikarenakan hal keamanan.
+__CI MySQL Dump__ merupakan file pustaka(library) untuk framework PHP __Codeigniter__ yang berfungsi sebagai proses backup database __MySQL__. Pada dasarnya, database MySQL dapat dibackup melalui perintah _Command Prompt_ (CMD) / Terminal (Dalam Linux) dengan perintah " *mysqldump* *--opt* *-h* *[namahost]* *-u* *[username]* *-p* *[password]* *[database]* *>* *~/[nama-file-output].sql* ". Namun, di beberapa penyedia layanan hosting PHP dan MySQL di Indonesia, fitur command ini tidak diimplementasikan/dinon-aktifkan oleh penyedia layanan hosting tersebut dikarenakan hal keamanan.
 
 Oleh sebab itu, saya sebagai pencinta CI berusaha membuat pustaka ini agar para pemilik situs/developer situs yang terkena masalah diatas, dapat tersolusikan dengan menggunakan pustakan ini.
 
