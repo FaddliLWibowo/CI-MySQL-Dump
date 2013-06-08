@@ -5,7 +5,7 @@ __CI MySQL Dump__ merupakan file pustaka(library) untuk framework PHP __Codeigni
 
 Oleh sebab itu, saya sebagai pencinta CI berusaha membuat pustaka ini agar para pemilik situs/developer situs yang terkena masalah diatas, dapat tersolusikan dengan menggunakan pustakan ini.
 
-Pustaka ini bersifat **FREE/Open Source** untuk digunakan, disebarkan atau diperjual-belikan. Adapun lisensi yang saya daftarkan pada pustaka ini menggunakan lisensi resmi dari "**[Attribution-ShareAlike 3.0 Unported (CC BY-SA 3.0)](http://creativecommons.org/licenses/by-sa/3.0/ "Creative Common Links")**".
+Pustaka ini bersifat **FREE/Open Source** untuk digunakan, disebarkan atau diperjual-belikan. Adapun lisensi yang saya daftarkan pada pustaka ini menggunakan lisensi resmi dari "[Attribution-ShareAlike 3.0 Unported (CC BY-SA 3.0)](http://creativecommons.org/licenses/by-sa/3.0/ "Creative Common Links")".
 
 Bagi Anda semua yang ingin berpartisipasi untuk mengembangkan pustaka ini, dapat menerbitkan(Issue) pertanyaan pada [LINK](https://github.com/nurimansyah/CI-MySQL-Dump/issues "Post an Issue") ini. Anda juga dapat mengambil([FORKING](https://github.com/nurimansyah/CI-MySQL-Dump/fork "Fork This Repository")) repositori ini kedalam repositori Anda.
 
@@ -15,3 +15,12 @@ Untuk informasi lebih lanjut mengenai **API** dan cara penggunaan pustaka ini, A
 
 Salam Developer CI,  
 Nurimansyah Rifwan
+
+***
+
+### TODO's
+
+***
+
+* Import System
+* Scheduled Backup (With Databases)
