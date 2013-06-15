@@ -100,6 +100,7 @@ class mysqldump {
 						else:
 							switch($tipe_field[$i]):
 								case 'int':
+								case 'float':
 									print($l[$v]);
 								break;
 								case 'string':
