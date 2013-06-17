@@ -19,24 +19,31 @@ set_time_limit(0);
 
 class mysqldump {
 	// Atribut Global
-	public $versi_dump = '0.1'; // Versi Library MySQL Dump	
+	public $versi_dump = '0.3'; // Versi Library MySQL Dump	
 	public $CI = NULL; // Inisialisasi variabel CI
+	
+	// ----- Konfigurasi Folder Backup Internal. (No Download Required)
+	// Knfigurasi path folder internal, jangan lupa untuk mengakhiri 
+	// string dengan garis miring ("/") pada atribut $save_path.
+	public $save_path = './backup/';
+	public $file_name = NULL;
 	
 	// Konstruktor
 	public function __construct()
 	{
 		// Instansi CI
 		$this->CI =& get_instance();
+		// Jika ingin mengganti file name, silahkan ganti pada konfigurasi konstruktor
+		// dibawah ini
+		$this->file_name = 'backup_'.date("dmY_His").'.sql';
 	}
 	
 	// Fungsi dumping database
-	public function do_dump()
+	public function do_dump($is_internal = false)
 	{
-		// Set Header
-		header('Content-type: application/sql');
-		header('Content-Disposition: attachment; filename="backup_'.date("dmY_His").'.sql"');
+		// ----- BEGIN -----
 		
-		// Set Version
+		// Set String
 		$string = '/*
 | MySQL Dump Versi - '.$this->versi_dump.'
 | Copyright (C): nurimansyah.rifwan@gmail.com
@@ -44,20 +51,48 @@ class mysqldump {
 */
 
 ';
-		print($string);
-		
 		// Tampilkan seluruh nama table
 		$result = $this->CI->db->list_tables();
 		
-		// Looping
-		if($result):
-			foreach($result as $i => $v):
-				// Ambil Data Table Structure
-				$this->get_structure($v);
-				// Insert Data
-				$this->table_data($v);
-			endforeach;
+		// Cek apakah akan disimpan di folder internal?
+		if(!$is_internal):
+			// Set Header
+			header('Content-type: application/sql');
+			header('Content-Disposition: attachment; filename="'.$this->file_name.'"');
+			
+			print($string);
+			
+			// Looping
+			if($result):
+				foreach($result as $i => $v):
+					// Ambil Data Table Structure
+					print($this->get_structure($v));
+					// Insert Data
+					print($this->table_data($v));
+				endforeach;
+			endif;
+			
+		else:
+			// Jika 'is_internal' bernilai 'true'
+			
+			// Looping
+			if($result):
+				foreach($result as $i => $v):
+					// Ambil Data Table Structure
+					$string .= $this->get_structure($v);
+					// Insert Data
+					$string .= $this->table_data($v);
+				endforeach;
+			endif;
+			
+			// Simpan Data
+			$this->CI->load->helper('file');
+			// Cek direktori
+			if(!file_exists($this->save_path)) mkdir($this->save_path);
+			if(!write_file($this->save_path . $this->file_name, $string)) die('Terjadi ERROR saat menulis data! (ERROR accuired on saving data)');
+			else return true;
 		endif;
+		// ----- END
 		$result->free_result();
 		
 		// Return
@@ -67,6 +102,9 @@ class mysqldump {
 	// Fungsi Insert Table data
 	private function table_data($table = NULL)
 	{
+		// Set String
+		$string = '';
+		
 		// Pilih Table
 		$result = $this->CI->db->get($table);
 		if($result)
@@ -78,7 +116,7 @@ class mysqldump {
 			// Jika ada data
 			if($banyak_data > 0)
 			{
-				print("/* Dumping data untuk tabel `".$table."` */\n");	
+				$string .= "/* Dumping data untuk tabel `".$table."` */\n";	
 				// Ambil tipe field
 				$tipe_field = array();
 				$nama_field = array();
@@ -89,19 +127,19 @@ class mysqldump {
 				endforeach;
 				
 				// Insert SQL
-				print("INSERT INTO `".$table."` VALUES\n");
+				$string .= "INSERT INTO `".$table."` VALUES\n";
 				$j = 0;
 				foreach($result->result_array() as $l):
-					print("(");
+					$string .= "(";
 					$i = 0;
 					foreach($nama_field as $i => $v):
 						if(is_null($l[$v])):
-							print("NULL");
+							$string .= "NULL";
 						else:
 							switch($tipe_field[$i]):
 								case 'int':
 								case 'float':
-									print($l[$v]);
+									$string .= $l[$v];
 								break;
 								case 'string':
 								case 'varchar':
@@ -110,22 +148,23 @@ class mysqldump {
 								case 'enum':
 								case 'text':
 								case 'blob':
-									print("'".mysql_real_escape_string($l[$v])."'");
+									$string .= "'".mysql_real_escape_string($l[$v])."'";
 								break;
 							endswitch;
 						endif;
 						$i++;
-						if($i < $banyak_field) print(', ');
-						else print(')');
+						if($i < $banyak_field) $string .= ', ';
+						else $string .= ')';
 					endforeach;
 				$j++;
-				if($j < $banyak_data) print(',
-');
-				else print(';
-');
+				if($j < $banyak_data) $string .= ',
+';
+				else $string .= ';
+';
 				endforeach;
 			}
 		}
+		return $string;
 	}
 	
 	// Fungsi Ambil Data Table Structure
@@ -143,6 +182,6 @@ class mysqldump {
 		if($result):
 			$string .= $result['Create Table'].";\n\n";
 		endif;
-		print($string);
+		return $string;
 	}
 }
