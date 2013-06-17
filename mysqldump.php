@@ -19,8 +19,8 @@ set_time_limit(0);
 
 class mysqldump {
 	// Atribut Global
-	var $versi_dump = '0.1'; // Versi Library MySQL Dump	
-	var $CI = NULL; // Inisialisasi variabel CI
+	public $versi_dump = '0.1'; // Versi Library MySQL Dump	
+	public $CI = NULL; // Inisialisasi variabel CI
 	
 	// Konstruktor
 	public function __construct()
